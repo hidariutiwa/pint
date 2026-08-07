@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+    provider = "prisma-client"
+    output   = "../src/lib/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model User {
+    id         Int         @id @default(autoincrement())
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+    userMemos  UserMemo[]
+    userGroups UserGroup[]
+}
+
+model Group {
+    id         Int         @id @default(autoincrement())
+    name       String
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+    userGroups UserGroup[]
+    memos      UserMemo[]
+}
+
+model UserGroup {
+    id         Int      @id @default(autoincrement())
+    userId     Int
+    user       User     @relation(fields: [userId], references: [id])
+    groupId    Int
+    group      Group    @relation(fields: [groupId], references: [id])
+    joinStatus Int
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+model UserMemo {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    user      User     @relation(fields: [userId], references: [id])
+    content   String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    groups    Group[]
+}
+
+model Schedule {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
