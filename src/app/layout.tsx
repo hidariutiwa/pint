@@ -1,4 +1,6 @@
 import "./globals.css";
+import Header from "@/components/utils/header";
+import Navigation from "@/components/utils/navigation";
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 
@@ -17,7 +19,13 @@ export default function RootLayout({
 	return (
 		<html lang="ja">
 			<body className={`${notoSansJp.className} antialiased`}>
-				{children}
+				<div className="flex h-screen w-screen flex-1 flex-col bg-stone-100">
+					<Header />
+					<main className="h-0 w-full grow overflow-y-auto">
+						{children}
+					</main>
+					<Navigation />
+				</div>
 			</body>
 		</html>
 	);
